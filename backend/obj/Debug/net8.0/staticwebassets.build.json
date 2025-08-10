@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "QKPxhkOlYCxAEYLnlOSxnhg3IGvWYAfiHL+MMHJfS0M=",
+  "Source": "DevOpsBackend",
+  "BasePath": "_content/DevOpsBackend",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

@@ -1,0 +1,46 @@
+trigger:
+  branches:
+    include:
+      - main
+
+variables:
+  acrName: 'assessmentprocr'
+  backendImage: 'devopsbackend'
+  frontendImage: 'devopsfrontend'
+  tag: '$(Build.BuildId)'
+
+stages:
+- stage: BuildAndPush
+  jobs:
+  - job: Build
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - checkout: self
+
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'MyACRServiceConnection'
+        repository: '$(acrName).azurecr.io/$(backendImage)'
+        command: 'buildAndPush'
+        Dockerfile: 'Backend/Dockerfile'
+        tags: |
+          $(tag)
+
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'MyACRServiceConnection'
+        repository: '$(acrName).azurecr.io/$(frontendImage)'
+        command: 'buildAndPush'
+        Dockerfile: 'frontend/Dockerfile'
+        tags: |
+          $(tag)
+
+    - script: |
+        sed -i "s/tag: .*/tag: $(tag)/" backend/helm/devops-backend/values.yaml
+        sed -i "s/tag: .*/tag: $(tag)/" frontend/helm/devops-frontend/values.yaml
+        git config user.email "pipeline@devops.com"
+        git config user.name "Pipeline Bot"
+        git commit -am "Update image tags to $(tag)"
+        git push
+      displayName: 'Update Helm chart values'
