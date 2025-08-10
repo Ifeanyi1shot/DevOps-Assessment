@@ -5,6 +5,9 @@ on:
     branches:
       - master
 
+permissions:
+  contents: write
+
 env:
   ACR_NAME: assessmentprocr
   BACKEND_IMAGE: devopsbackend
@@ -18,6 +21,8 @@ jobs:
     steps:
     - name: Checkout Code
       uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Login to ACR with Docker
       run: echo ${{ secrets.ACR_PASSWORD }} | docker login ${{ env.ACR_NAME }}.azurecr.io -u ${{ secrets.ACR_USERNAME }} --password-stdin
@@ -44,3 +49,6 @@ jobs:
         git add helm/backend/values.yaml helm/frontend/values.yaml
         git commit -m "Update image tags to ${TAG}"
         git push
+
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
