@@ -1,6 +1,6 @@
 image:
   repository: assessmentprocr.azurecr.io/devopsfrontend
-  tag: v2
+  tag: 3
   pullPolicy: IfNotPresent
 
 replicaCount: 1
