@@ -1,0 +1,46 @@
+name: Build & Push to ACR for ArgoCD
+
+on:
+  push:
+    branches:
+      - master
+
+env:
+  ACR_NAME: assessmentprocr
+  BACKEND_IMAGE: devopsbackend
+  FRONTEND_IMAGE: devopsfrontend
+  TAG: ${{ github.run_number }}
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Login to ACR with Docker
+      run: echo ${{ secrets.ACR_PASSWORD }} | docker login ${{ env.ACR_NAME }}.azurecr.io -u ${{ secrets.ACR_USERNAME }} --password-stdin
+
+    - name: Build & Push Backend
+      run: |
+        docker build -t $ACR_NAME.azurecr.io/$BACKEND_IMAGE:$TAG ./backend
+        docker push $ACR_NAME.azurecr.io/$BACKEND_IMAGE:$TAG
+
+    - name: Build & Push Frontend
+      run: |
+        docker build -t $ACR_NAME.azurecr.io/$FRONTEND_IMAGE:$TAG ./frontend
+        docker push $ACR_NAME.azurecr.io/$FRONTEND_IMAGE:$TAG
+
+    - name: Update Helm Chart Values
+      run: |
+        sed -i "s/tag: .*/tag: ${TAG}/" helm/backend/values.yaml
+        sed -i "s/tag: .*/tag: ${TAG}/" helm/frontend/values.yaml
+
+    - name: Commit & Push Updated Chart
+      run: |
+        git config --global user.email "github-actions@users.noreply.github.com"
+        git config --global user.name "GitHub Actions"
+        git add helm/backend/values.yaml helm/frontend/values.yaml
+        git commit -m "Update image tags to ${TAG}"
+        git push
