@@ -130,6 +130,27 @@ ArgoCD UI (port-forwarded) → https://localhost:9090
 
 ---
 
+## 10. Monitoring & Metrics (Prometheus & Grafana)
+
+### Overview
+To monitor our AKS workloads, we deployed the **kube-prometheus-stack** Helm chart using ArgoCD.  
+This stack provides:
+- **Prometheus** for metrics scraping  
+- **Grafana** for visualization dashboards  
+- **ServiceMonitor** resources to scrape metrics from backend & frontend  
+
+### Steps Performed
+1. Installed Prometheus & Grafana in the `monitoring` namespace via ArgoCD.  
+2. Created `ServiceMonitor` objects for both backend & frontend Helm charts.  
+3. Verified metrics scraping from `/metrics` endpoint.  
+4. Configured Grafana to use Prometheus as its default data source.  
+
+### Access Details
+- **Prometheus UI** → http://http://57.153.135.122/:80  
+- **Grafana UI** → http://50.85.59.112:30300/  
+  - Username: `admin`  
+  - Password: `admin123`
+
 
 
 
