@@ -128,7 +128,11 @@ Please note: all deployed services will be taken down after two weeks.
 
 Frontend → http://98.64.16.226/
 Backend API → http://98.64.16.226/api/products/
-ArgoCD UI (port-forwarded) → https://localhost:9090
+ArgoCD UI (port-forwarded) → https://127.0.0.1:9090
+
+ArgoDC Usernamr: 'admin"
+ArgoDC Password: 'R4yxQf4YA9YZdaJy'
+
 
 ---
 
@@ -148,7 +152,7 @@ This stack provides:
 4. Configured Grafana to use Prometheus as its default data source.  
 
 ### Access Details
-- **Prometheus UI** → http://http://57.153.135.122/:80  
+- **Prometheus UI** → http://57.153.135.122:80/  
 - **Grafana UI** → http://50.85.59.112:30300/  
   - Username: `admin`  
   - Password: `admin123`
