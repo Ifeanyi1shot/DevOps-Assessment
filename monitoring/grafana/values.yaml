@@ -1,0 +1,19 @@
+service:
+  type: LoadBalancer
+  port: 30300
+
+persistence:
+  enabled: false
+
+adminUser: admin
+adminPassword: admin123
+
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+      - name: Prometheus
+        type: prometheus
+        url: http://prometheus-server.default.svc.cluster.local:30090
+        access: proxy
+        isDefault: true
