@@ -9,6 +9,8 @@ The setup demonstrates:
 - Helm-based Kubernetes deployments
 - GitOps workflow using ArgoCD
 - Automated CI/CD pipeline via GitHub Actions
+- Azure Pipelines configuration (created but not fully used — main focus on GitHub Actions)  
+- Cluster monitoring using Prometheus & Grafana for metrics and visualization
 
 ---
 
